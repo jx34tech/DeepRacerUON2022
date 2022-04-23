@@ -167,8 +167,7 @@ class SageS3Client():
                 logger.info(s3_key.format(e.response['Error']))
                 return False
             else:
-                utils.json_format_logger("boto client exception error [{}] occured on download file-{} from s3 bucket-{} key-{}"
-                            .format(e.response['Error'], local_path, self.bucket, s3_key),
+                utils.json_format_logger("boto client exception error [{}] occured on download file-{} from s3 bucket-{} key-{}".format(e.response['Error'], local_path, self.bucket, s3_key),
                             **utils.build_user_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_401))
                 return False
         except Exception as e:
