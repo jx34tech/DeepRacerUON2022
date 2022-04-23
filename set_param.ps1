@@ -1,0 +1,9 @@
+﻿set SAGEMAKER_TRAINING_MODULE=sagemaker_tensorflow_container.training:main
+set AWS_ACCESS_KEY_ID=minio
+set AWS_SECRET_ACCESS_KEY=miniokey
+set AWS_REGION=us-east-1
+set TRAINING_JOB_NAME=rl-deepracer-sagemaker
+set S3_ENDPOINT_URL=http://localhost:9000
+set NODE_TYPE=SAGEMAKER_TRAINING_WORKER
+set SM_TRAINING_ENV=C://Users/Jack/Documents/DeepRacer/hyperparameters.json
+set ALGO_MODEL_DIR=C://Users/Jack/Documents/DeepRacer/run/model

@@ -1,0 +1,1 @@
+python C:\\Users\Jack\Documents\DeepRacer\source\training_worker.py --RLCOACH_PRESET deepracer --aws_region us-east-1 --model_metadata_s3_key s3://bucket/custom_files/model_metadata.json --pretrained_s3_bucket bucket --pretrained_s3_prefix rl-deepracer-pretrained --s3_bucket bucket --s3_prefix rl-deepracer-sagemaker
