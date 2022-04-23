@@ -179,7 +179,7 @@ def main():
     s3_client = SageS3Client(bucket=args.s3_bucket, s3_prefix=args.s3_prefix, aws_region=args.aws_region)
 
     # Load the model metadata
-    model_metadata_local_path = os.path.join(CUSTOM_FILES_PATH, 'model_metadata.json')
+    model_metadata_local_path = './custom_files\\&model_metadata.json'
     load_model_metadata(s3_client, args.model_metadata_s3_key, model_metadata_local_path)
     s3_client.upload_file(s3_prefix + "/model/model_metadata.json"), model_metadata_local_path)
     shutil.copy2(model_metadata_local_path, SM_MODEL_OUTPUT_DIR)
