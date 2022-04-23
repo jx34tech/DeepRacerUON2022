@@ -179,10 +179,9 @@ def main():
     s3_client = SageS3Client(bucket=args.s3_bucket, s3_prefix=args.s3_prefix, aws_region=args.aws_region)
 
     # Load the model metadata
-    model_metadata_local_path = os.path.join(CUSTOM_FILES_PATH, 'model_metadata.json')
+    model_metadata_local_path = './custom_files/model_metadata.json'
     load_model_metadata(s3_client, args.model_metadata_s3_key, model_metadata_local_path)
-    # s3_client.upload_file(os.path.normpath("%s/model/model_metadata.json" % args.s3_prefix), model_metadata_local_path)
-    s3_client.upload_file("%s/model/model_metadata.json" % args.s3_prefix, model_metadata_local_path)
+    s3_client.upload_file(s3_prefix + "/model/model_metadata.json"), model_metadata_local_path)
     shutil.copy2(model_metadata_local_path, SM_MODEL_OUTPUT_DIR)
 
     # Register the gym enviroment, this will give clients the ability to creat the enviroment object
@@ -207,9 +206,8 @@ def main():
         from markov.sagemaker_graph_manager import get_graph_manager
         params_blob = os.environ.get('SM_TRAINING_ENV', '')
         if params_blob:
-            # params = json.loads(params_blob)
-            # sm_hyperparams_dict = params["hyperparameters"]
-            sm_hyperparams_dict = json.load(open(params_blob))
+            params = json.loads(params_blob)
+            sm_hyperparams_dict = params["hyperparameters"]
         else:
             sm_hyperparams_dict = {}
         graph_manager, robomaker_hyperparams_json = get_graph_manager(**sm_hyperparams_dict)
