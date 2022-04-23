@@ -51,7 +51,7 @@ class SageS3Client():
     def upload_hyperparameters(self, hyperparams_json):
         s3_client = self.get_client()
         file_handle = io.BytesIO(hyperparams_json.encode())
-        s3_client.upload_fileobj(file_handle, self.bucket, self.hyperparameters_key)
+        s3_client.upload_file(file_handle, self.bucket, self.hyperparameters_key)
 
     def upload_model(self, checkpoint_dir):
         s3_client = self.get_client()

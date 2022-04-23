@@ -28,7 +28,7 @@ import tensorflow as tf
 logger = utils.Logger(__name__, logging.INFO).get_logger()
 
 PRETRAINED_MODEL_DIR = "./pretrained_checkpoint"
-SM_MODEL_OUTPUT_DIR = os.environ.get("ALGO_MODEL_DIR", "/opt/ml/model")
+SM_MODEL_OUTPUT_DIR = "./sm_model"
 CUSTOM_FILES_PATH = "./custom_files"
 
 if not os.path.exists(CUSTOM_FILES_PATH):
