@@ -161,7 +161,7 @@ class SageS3Client():
             return True
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == "404":
-                logger.info("Exception [{}] occured on download file-{} from s3 bucket-{} key-{}".format(e.response['Error'], local_path, self.bucket, s3_key))
+                # logger.info("Exception [{}] occured on download file-{} from s3 bucket-{} key-{}".format(e.response['Error'], local_path, self.bucket, s3_key))
                 logger.info(local_path.format(e.response['Error']))
                 logger.info(self.bucket.format(e.response['Error']))
                 logger.info(s3_key.format(e.response['Error']))
