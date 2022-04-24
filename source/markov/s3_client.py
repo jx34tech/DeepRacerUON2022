@@ -14,6 +14,7 @@ from markov import utils
 
 logger = utils.Logger(__name__, logging.INFO).get_logger()
 
+
 class SageS3Client():
     def __init__(self, bucket=None, s3_prefix=None, aws_region=None):
         self.aws_region = aws_region
@@ -66,7 +67,8 @@ class SageS3Client():
 
     def download_model(self, checkpoint_dir):
         s3_client = self.get_client()
-        logger.info("Downloading pretrained model from %s/%s %s" % (self.bucket, self.model_checkpoints_prefix, checkpoint_dir))
+        logger.info(
+            "Downloading pretrained model from %s/%s %s" % (self.bucket, self.model_checkpoints_prefix, checkpoint_dir))
         filename = "None"
         try:
             filename = os.path.abspath(os.path.join(checkpoint_dir, "checkpoint"))
@@ -81,7 +83,7 @@ class SageS3Client():
                 if "Contents" not in response:
                     # If no lock is found, try getting the checkpoint
                     try:
-                        key = self._get_s3_key("checkpoint").replace('\\','/')
+                        key = self._get_s3_key("checkpoint").replace('\\', '/')
                         logger.info("Downloading %s" % key)
                         s3_client.download_file(Bucket=self.bucket,
                                                 Key=key,
@@ -119,8 +121,9 @@ class SageS3Client():
                         return True
 
         except Exception as e:
-            utils.json_format_logger ("{} while downloading the model {} from S3".format(e, filename),
-                     **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_500))
+            utils.json_format_logger("{} while downloading the model {} from S3".format(e, filename),
+                                     **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION,
+                                                                     utils.SIMAPP_EVENT_ERROR_CODE_500))
             return False
 
     def get_ip(self):
@@ -132,8 +135,10 @@ class SageS3Client():
                 ip = json.load(f)["IP"]
             return ip
         except Exception as e:
-            utils.json_format_logger("Exception [{}] occured, Cannot fetch IP of redis server running in SageMaker. Job failed!".format(e),
-                        **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_503))
+            utils.json_format_logger(
+                "Exception [{}] occured, Cannot fetch IP of redis server running in SageMaker. Job failed!".format(e),
+                **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION,
+                                                utils.SIMAPP_EVENT_ERROR_CODE_503))
             sys.exit(1)
 
     def _wait_for_ip_upload(self, timeout=600):
@@ -145,11 +150,12 @@ class SageS3Client():
                 time.sleep(1)
                 time_elapsed += 1
                 if time_elapsed % 5 == 0:
-                    logger.info ("Waiting for SageMaker Redis server IP... Time elapsed: %s seconds" % time_elapsed)
+                    logger.info("Waiting for SageMaker Redis server IP... Time elapsed: %s seconds" % time_elapsed)
                 if time_elapsed >= timeout:
-                    #raise RuntimeError("Cannot retrieve IP of redis server running in SageMaker")
+                    # raise RuntimeError("Cannot retrieve IP of redis server running in SageMaker")
                     utils.json_format_logger("Cannot retrieve IP of redis server running in SageMaker. Job failed!",
-                        **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_503))
+                                             **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION,
+                                                                             utils.SIMAPP_EVENT_ERROR_CODE_503))
                     sys.exit(1)
             else:
                 return
@@ -167,11 +173,15 @@ class SageS3Client():
                 logger.info(s3_key.format(e.response['Error']))
                 return False
             else:
-               # utils.json_format_logger("boto client exception error [{}] occured on download file-{} from s3 bucket-{} key-{}".format(e.response['Error'], local_path, self.bucket, s3_key),**utils.build_user_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_401))
+                # utils.json_format_logger("boto client exception error [{}] occured on download file-{} from s3 bucket-{} key-{}".format(e.response['Error'], local_path, self.bucket, s3_key),**utils.build_user_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_401))
+                logger.info(local_path.format(e.response['Error']))
+                logger.info(self.bucket.format(e.response['Error']))
+                logger.info(s3_key.format(e.response['Error']))
                 return False
         except Exception as e:
-            utils.json_format_logger("Exception [{}] occcured on download file-{} from s3 bucket-{} key-{}".format(e, local_path, self.bucket, s3_key),
-                        **utils.build_user_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_401))
+            utils.json_format_logger(
+                "Exception [{}] occcured on download file-{} from s3 bucket-{} key-{}".format(e, local_path, self.bucket, s3_key),
+                **utils.build_user_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_401))
             return False
 
     def upload_file(self, s3_key, local_path):
@@ -182,6 +192,8 @@ class SageS3Client():
                                   Key=s3_key)
             return True
         except Exception as e:
-            utils.json_format_logger("{} on upload file-{} to s3 bucket-{} key-{}".format(e, local_path, self.bucket, s3_key),
-                        **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION, utils.SIMAPP_EVENT_ERROR_CODE_500))
+            utils.json_format_logger(
+                "{} on upload file-{} to s3 bucket-{} key-{}".format(e, local_path, self.bucket, s3_key),
+                **utils.build_system_error_dict(utils.SIMAPP_S3_DATA_STORE_EXCEPTION,
+                                                utils.SIMAPP_EVENT_ERROR_CODE_500))
             return False
