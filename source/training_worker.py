@@ -184,7 +184,7 @@ def main():
     s3_client.upload_file(args.s3_prefix + "/model/model_metadata.json", model_metadata_local_path)
     shutil.copy2(model_metadata_local_path, SM_MODEL_OUTPUT_DIR)
 
-    # Register the gym enviroment, this will give clients the ability to creat the environment object
+    # Register the gym environment, this will give clients the ability to creat the environment object
     register(id=defaults.ENV_ID, entry_point=defaults.ENTRY_POINT,
              max_episode_steps=defaults.MAX_STEPS, reward_threshold=defaults.THRESHOLD)
 
