@@ -51,7 +51,7 @@ class S3BotoDataStore(DataStore):
 
     def _get_client(self):
         session = boto3.session.Session()
-        s3_url = os.environ.get('S3_ENDPOINT_URL')
+        s3_url = 'http://localhost:9000'
         config = Config(connect_timeout=5, read_timeout=5)
         return session.client('s3', region_name=self.params.aws_region, endpoint_url=s3_url, config=config)
 
